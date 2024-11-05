@@ -20,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile
 class PdfController(private val pdfService: PdfService) {
 
     @PostMapping("/upload")
-    fun uploadPdf(@RequestParam("file") file: MultipartFile): ResponseEntity<String> {
-        val uploadedFile = pdfService.uploadPdf(file)
+    fun uploadPdf(@RequestParam("file") file: MultipartFile, description: String?): ResponseEntity<String> {
+        val uploadedFile = pdfService.uploadPdf(file, description)
         return ResponseEntity.status(HttpStatus.CREATED).body("File uploaded with ID: ${uploadedFile.id}")
     }
 

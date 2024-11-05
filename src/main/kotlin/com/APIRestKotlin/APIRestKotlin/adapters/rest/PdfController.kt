@@ -2,6 +2,9 @@ package com.APIRestKotlin.APIRestKotlin.adapters.rest
 
 import com.APIRestKotlin.APIRestKotlin.application.service.PdfService
 import com.APIRestKotlin.APIRestKotlin.domain.PdfFile
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -36,5 +39,34 @@ class PdfController(private val pdfService: PdfService) {
         }else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
         }
+    }
+
+    @GetMapping()
+    fun listPdfs(
+        @RequestParam("page", defaultValue = "0") page: Int,
+        @RequestParam("size", defaultValue = "10") size: Int
+    ): ResponseEntity<Map<String, Any>> {
+        val pdfPage = pdfService.getAllPdfs(page, size)
+
+        // Transformar o conteúdo do Page para uma lista de Map<String, Any>
+        val pdfSummaries = pdfPage.content.map { pdf ->
+            mapOf(
+                "id" to pdf.id,
+                "fileName" to pdf.fileName,
+                "description" to pdf.description
+            )
+        }
+
+        // Criar uma estrutura de resposta com dados e metadados de paginação
+        val response = mapOf(
+            "content" to pdfSummaries,
+            "currentPage" to pdfPage.number,
+            "totalItems" to pdfPage.totalElements,
+            "totalPages" to pdfPage.totalPages,
+            "pageSize" to pdfPage.size,
+            "isLast" to pdfPage.isLast
+        )
+
+        return ResponseEntity.ok(response)
     }
 }

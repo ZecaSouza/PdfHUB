@@ -2,6 +2,8 @@ package com.APIRestKotlin.APIRestKotlin.application.service
 
 import com.APIRestKotlin.APIRestKotlin.adapters.persistence.PdfFileRepository
 import com.APIRestKotlin.APIRestKotlin.domain.PdfFile
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -21,5 +23,10 @@ class PdfService(private val pdfFileRepository: PdfFileRepository) {
 
     fun downloadPdf(id: Long): PdfFile? {
         return pdfFileRepository.findById(id).orElse(null)
+    }
+
+    fun getAllPdfs(page: Int, size: Int): Page<PdfFile> {
+        val pageable = PageRequest.of(page, size)
+        return pdfFileRepository.findAll(pageable)
     }
 }

@@ -8,11 +8,12 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class PdfService(private val pdfFileRepository: PdfFileRepository) {
 
-    fun uploadPdf(file: MultipartFile): PdfFile{
+    fun uploadPdf(file: MultipartFile, description: String?): PdfFile{
         val pdfFile = PdfFile(
             fileName = file.originalFilename ?: "unknow.pdf",
             contentType = file.contentType ?: "application/pdf",
-            fileData = file.bytes
+            fileData = file.bytes,
+            description = description
         )
 
         return pdfFileRepository.save(pdfFile)

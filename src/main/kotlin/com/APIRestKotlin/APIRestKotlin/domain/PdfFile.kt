@@ -12,5 +12,6 @@ data class PdfFile(
     val id: Long = 0,
     val fileName: String,
     val contentType: String,
-    val fileData: ByteArray
+    val fileData: ByteArray,
+    val description: String? = null
 )

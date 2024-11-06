@@ -13,5 +13,6 @@ data class PdfFile(
     val fileName: String,
     val contentType: String,
     val fileData: ByteArray,
-    val description: String? = null
+    val description: String? = null,
+    var isDeleted: Boolean? = false
 )

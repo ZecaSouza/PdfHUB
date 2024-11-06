@@ -29,4 +29,15 @@ class PdfService(private val pdfFileRepository: PdfFileRepository) {
         val pageable = PageRequest.of(page, size)
         return pdfFileRepository.findAll(pageable)
     }
+
+    fun deletePdf(id: Long):Boolean{
+        val pdfFile = pdfFileRepository.findByIdAndIsDeletedFalse(id)
+        return if (pdfFile != null){
+            pdfFile.isDeleted = true
+            pdfFileRepository.save(pdfFile)
+            true
+        }else{
+            false
+        }
+    }
 }

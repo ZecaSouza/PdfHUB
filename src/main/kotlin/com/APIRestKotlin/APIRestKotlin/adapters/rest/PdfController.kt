@@ -2,13 +2,11 @@ package com.APIRestKotlin.APIRestKotlin.adapters.rest
 
 import com.APIRestKotlin.APIRestKotlin.application.service.PdfService
 import com.APIRestKotlin.APIRestKotlin.domain.PdfFile
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -48,7 +46,7 @@ class PdfController(private val pdfService: PdfService) {
     ): ResponseEntity<Map<String, Any>> {
         val pdfPage = pdfService.getAllPdfs(page, size)
 
-        // Transformar o conteúdo do Page para uma lista de Map<String, Any>
+
         val pdfSummaries = pdfPage.content.map { pdf ->
             mapOf(
                 "id" to pdf.id,
@@ -57,7 +55,7 @@ class PdfController(private val pdfService: PdfService) {
             )
         }
 
-        // Criar uma estrutura de resposta com dados e metadados de paginação
+
         val response = mapOf(
             "content" to pdfSummaries,
             "currentPage" to pdfPage.number,
@@ -69,4 +67,14 @@ class PdfController(private val pdfService: PdfService) {
 
         return ResponseEntity.ok(response)
     }
+
+    @DeleteMapping("/{id}")
+    fun deletePdf(@PathVariable id: Long): ResponseEntity<Void>{
+        return if (pdfService.deletePdf(id)){
+            ResponseEntity.noContent().build()
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
+    }
+
 }

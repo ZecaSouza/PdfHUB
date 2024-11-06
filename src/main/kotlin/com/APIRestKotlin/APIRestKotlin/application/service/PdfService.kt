@@ -27,8 +27,9 @@ class PdfService(private val pdfFileRepository: PdfFileRepository) {
 
     fun getAllPdfs(page: Int, size: Int): Page<PdfFile> {
         val pageable = PageRequest.of(page, size)
-        return pdfFileRepository.findAll(pageable)
+        return pdfFileRepository.findByIsDeletedFalse(pageable)
     }
+
 
     fun deletePdf(id: Long):Boolean{
         val pdfFile = pdfFileRepository.findByIdAndIsDeletedFalse(id)
@@ -38,6 +39,18 @@ class PdfService(private val pdfFileRepository: PdfFileRepository) {
             true
         }else{
             false
+        }
+    }
+
+    fun getById(id: Long): Map<String, Any>? {
+        val pdfFile = pdfFileRepository.findByIdAndIsDeletedFalse(id)
+        return pdfFile?.let {
+            mapOf(
+                "id" to it.id,
+                "fileName" to it.fileName,
+                "description" to (it.description ?: ""),
+                "contentType" to it.contentType
+            )
         }
     }
 }

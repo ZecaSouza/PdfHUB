@@ -77,4 +77,13 @@ class PdfController(private val pdfService: PdfService) {
         }
     }
 
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Long): ResponseEntity<Map<String, Any>>{
+        val response = pdfService.getById(id)
+        return if (response != null){
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
+        }
+    }
 }

@@ -1,0 +1,22 @@
+pdf_file:
+  - id: 1
+    file_name: "example1.pdf"
+    content_type: "application/pdf"
+    file_data: !!binary |
+      VGhpcyBpcyBhIHNhbXBsZSBmaWxlIGRhdGE=
+    description: "Sample PDF file for testing."
+    is_deleted: false
+  - id: 2
+    file_name: "example2.pdf"
+    content_type: "application/pdf"
+    file_data: !!binary |
+      U2Vjb25kIHNhbXBsZSBmaWxlIGRhdGE=
+    description: "Another sample PDF file."
+    is_deleted: true
+  - id: 3
+    file_name: "report.pdf"
+    content_type: "application/pdf"
+    file_data: !!binary |
+      VGhpcmQgc2FtcGxlIGZpbGUgZGF0YQ==
+    description: "Monthly report document."
+    is_deleted: false
